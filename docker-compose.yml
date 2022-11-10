@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+  caddy-lb:
+    networks:
+      - example
+    image: caddy:2-alpine
+    volumes:
+      - ./caddy/data:/data
+      - ./caddy/config/Caddyfile:/etc/caddy/Caddyfile
+    depends_on:
+      - www01
+      - www02
+    ports:
+      - "80:80"
+  www01:
+    image: jmalloc/echo-server
+    hostname: www01
+    networks:
+      - example
+    ports:
+      - "8080"
+  www02:
+    image: jmalloc/echo-server
+    hostname: www02
+    networks:
+      - example
+    ports:
+      - "8080"
+
+networks:
+  example:
